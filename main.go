@@ -33,9 +33,7 @@ func check(e error){
 }
 func convert(str string) int{
 	num, err := strconv.Atoi(str)
-	if err != nil {
-		panic(err)
-	}
+	check(err)
 	return num
 }
 
