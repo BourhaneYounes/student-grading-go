@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -75,13 +74,13 @@ func calculateGrade(students []student) []studentStat {
 	for i, st := range students{
 		finalscore := average(st.test1Score, st.test2Score, st.test3Score, st.test4Score)
 		if (finalscore < 35) {
-			stats[i] = studentStat{student: st, finalScore: finalscore, grade: "F"}
+			stats[i] = studentStat{student: st, finalScore: finalscore, grade: F}
 		}else if finalscore >= 35 && finalscore < 50 {
-			stats[i] = studentStat{student: st, finalScore: finalscore, grade: "C"}
+			stats[i] = studentStat{student: st, finalScore: finalscore, grade: C}
 		}else if finalscore >=50 && finalscore < 70 {
-			stats[i] = studentStat{student: st, finalScore: finalscore, grade: "B"}
+			stats[i] = studentStat{student: st, finalScore: finalscore, grade: B}
 		}else if finalscore >= 70 {
-			stats[i] = studentStat{student: st, finalScore: finalscore, grade: "A"}
+			stats[i] = studentStat{student: st, finalScore: finalscore, grade: A}
 		}
 
 	}
@@ -101,9 +100,12 @@ func findOverallTopper(gradedStudents []studentStat) studentStat {
 }
 
 func findTopperPerUniversity(gs []studentStat) map[string]studentStat {
-	return nil
+	top := make(map[string]studentStat)
+	for _, stats := range gs {
+		if stats.finalScore > top[stats.student.university].finalScore {
+			top[stats.student.university] = stats
+		}
+	}
+	return top
 }
 
-func main(){
-	fmt.Println(parseCSV("./grades.csv"))
-}
