@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	_ "io"
 	"os"
 	"strconv"
 	"strings"
@@ -41,6 +40,14 @@ func convert(str string) int{
 	return num
 }
 
+func average(score ...int) float32{
+	var avg float32
+	for _, nums := range score{
+		avg += float32(nums)
+	}
+	return avg/4
+}
+
 func parseCSV(filePath string) []student {
 	students := make([]student, 0)
 	file, err := os.Open(filePath)
@@ -64,7 +71,21 @@ func parseCSV(filePath string) []student {
 }
 
 func calculateGrade(students []student) []studentStat {
-	return nil
+	stats := make([]studentStat, len(students))
+	for i, st := range students{
+		finalscore := average(st.test1Score, st.test2Score, st.test3Score, st.test4Score)
+		if (finalscore < 35) {
+			stats[i] = studentStat{student: st, finalScore: finalscore, grade: "F"}
+		}else if finalscore >= 35 && finalscore < 50 {
+			stats[i] = studentStat{student: st, finalScore: finalscore, grade: "C"}
+		}else if finalscore >=50 && finalscore < 70 {
+			stats[i] = studentStat{student: st, finalScore: finalscore, grade: "B"}
+		}else if finalscore >= 70 {
+			stats[i] = studentStat{student: st, finalScore: finalscore, grade: "A"}
+		}
+
+	}
+	return stats
 }
 
 func findOverallTopper(gradedStudents []studentStat) studentStat {
